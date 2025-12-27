@@ -304,7 +304,7 @@ class Unet3D(nn.Module):
         h = self.mid_block2(h, t_emb)
         
         # Decoder (upsampling)
-        for up_block, skip in zip(self.ups, reversed(skips[:-1])):
+        for up_block, skip in zip(self.ups, reversed(skips)):
             h = up_block[0](h, skip, t_emb)
         
         # Output projection

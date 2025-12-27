@@ -269,9 +269,12 @@ class GaussianDiffusion(pl.LightningModule):
         # Encode dual DRRs as conditioning
         # Concatenate PA and lateral views
         drr_pair = torch.cat([pa_drr, lateral_drr], dim=1)  # [B, 2, H, W]
-        # Expand to match CTPA spatial dims for encoding
-        drr_expanded = drr_pair.unsqueeze(2).repeat(1, 1, ctpa.shape[2], 1, 1)  # [B, 2, D, H, W]
-        c = self.encode_to_latent(drr_expanded)  # [B, C, D', H', W']
+        # Expand to 3D by adding depth dimension
+        drr_expanded = drr_pair.unsqueeze(2)  # [B, 2, 1, H, W]
+        # Repeat along depth to match latent space depth
+        drr_expanded = drr_expanded.repeat(1, 1, x_0.shape[2], 1, 1)  # [B, 2, D', H, W]
+        # Use drr_expanded directly as conditioning (no encoding needed)
+        c = drr_expanded
         
         # Sample random timesteps
         b = x_0.shape[0]

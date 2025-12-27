@@ -20,8 +20,8 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, current_dir)
 sys.path.insert(0, parent_dir)
 
-from ddpm.diffusion import GaussianDiffusion
-from ddpm.unet import Unet3D
+from diffusion import GaussianDiffusion
+from unet import Unet3D
 from dataset.xray_ctpa_dual_drr_dataset import XrayCTPADualDRRDataset
 from torch.utils.data import DataLoader
 
