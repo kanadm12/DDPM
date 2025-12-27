@@ -158,6 +158,9 @@ class UpBlock3D(nn.Module):
     
     def forward(self, x: torch.Tensor, skip: torch.Tensor, time_emb: torch.Tensor = None) -> torch.Tensor:
         x = self.upsample(x)
+        # Ensure spatial dimensions match before concatenation
+        if x.shape[2:] != skip.shape[2:]:
+            x = F.interpolate(x, size=skip.shape[2:], mode='trilinear', align_corners=False)
         x = torch.cat([x, skip], dim=1)
         x = self.block1(x, time_emb)
         x = self.block2(x, time_emb)
