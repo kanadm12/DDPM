@@ -238,7 +238,7 @@ def main():
 
         # DDP Strategy with proper configuration
         ddp_strategy = DDPStrategy(
-            find_unused_parameters=True,
+            find_unused_parameters=False,  # No unused parameters, improve performance
             gradient_as_bucket_view=True,
             static_graph=False,
         )
