@@ -197,7 +197,7 @@ def main():
             print(f"  - Model channels: {cfg.model.diffusion_num_channels}")
 
         model = Unet3D(
-            dim=cfg.model.diffusion_img_size,
+            dim=cfg.model.dim,  # Base channel dimension (64)
             cond_dim=cfg.model.cond_dim,  # 2 for dual DRRs
             dim_mults=cfg.model.dim_mults,
             channels=cfg.model.diffusion_num_channels,

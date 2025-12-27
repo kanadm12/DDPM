@@ -298,8 +298,8 @@ class Unet3D(nn.Module):
         # Encoder (downsampling)
         skips = []
         for down_block in self.downs:
+            skips.append(h)  # Save before downsampling
             h = down_block[0](h, t_emb)
-            skips.append(h)
         
         # Middle
         h = self.mid_block1(h, t_emb)
