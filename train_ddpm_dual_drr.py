@@ -103,25 +103,14 @@ def get_dataloaders(cfg):
 
 def setup_callbacks(cfg):
     """Setup training callbacks for checkpointing and monitoring"""
-    return [
-        # Best model checkpoint based on validation loss
+    callbacks = [
+        # Best model checkpoint based on training loss (primary metric since val is skipped)
         ModelCheckpoint(
             dirpath=cfg.model.results_folder,
-            filename='best-epoch{epoch:02d}-val_loss{val/loss:.4f}',
-            monitor='val/loss',
-            mode='min',
-            save_top_k=3,
-            save_last=False,
-            every_n_epochs=1,
-            verbose=True
-        ),
-        # Best model checkpoint based on training loss
-        ModelCheckpoint(
-            dirpath=cfg.model.results_folder,
-            filename='best-train-epoch{epoch:02d}-train_loss{train/loss_epoch:.4f}',
+            filename='best-epoch{epoch:02d}-loss{train/loss_epoch:.4f}',
             monitor='train/loss_epoch',
             mode='min',
-            save_top_k=2,
+            save_top_k=3,
             save_last=False,
             every_n_epochs=1,
             verbose=True
@@ -147,6 +136,8 @@ def setup_callbacks(cfg):
         # Monitor learning rate
         LearningRateMonitor(logging_interval='step')
     ]
+    
+    return callbacks
 
 
 def main():
